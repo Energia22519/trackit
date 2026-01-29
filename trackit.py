@@ -1,6 +1,29 @@
 import time
 import json
 import os
+import time
+import json
+import os
+import sys
+import subprocess
+
+# --- AUTO-INSTALADOR DE DEPENDENCIAS ---
+def instalar_y_cargar(paquete):
+    try:
+        # Intentamos importar el paquete
+        __import__(paquete)
+    except ImportError:
+        print(f"🔧 Instalando librería necesaria: {paquete}...")
+        # Si falla, usamos pip para instalarlo
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "qrcode", "colorama", "pillow"])
+        print(f"✅ {paquete} instalado correctamente.\n")
+
+# Verificamos las librerías externas
+# Nota: qrcode a veces necesita 'pillow' para generar imágenes, lo instalamos por si acaso
+instalar_y_cargar("qrcode")
+instalar_y_cargar("colorama")
+
+# --- AHORA SÍ, IMPORTAMOS NORMALMENTE ---
 import qrcode
 from colorama import init, Fore, Style
 
@@ -171,3 +194,4 @@ def iniciar_trackit():
             print("Opción no válida.")
 
 iniciar_trackit()
+
